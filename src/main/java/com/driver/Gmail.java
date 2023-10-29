@@ -36,7 +36,7 @@ public class Gmail extends Email {
         // Each message is distinct
         // If the given message is found in any mail in the inbox, move the mail to trash, else do nothing
         for(int  i = 0; i < inbox.size(); i++) {
-            if(inbox.get(i).getMessage() == message) {
+            if(inbox.get(i).getMessage().equals(message)) {
                 trash.addFirst(inbox.remove(i));
                 Inbox -= 1;
                 Trash += 1;
@@ -49,7 +49,7 @@ public class Gmail extends Email {
         // If the inbox is empty, return null
         // Else, return the message of the latest mail present in the inbox
         if(inbox == null)
-            return "null";
+            return null;
 
         return inbox.getFirst().getMessage();
     }
@@ -58,7 +58,7 @@ public class Gmail extends Email {
         // If the inbox is empty, return null
         // Else, return the message of the oldest mail present in the inbox
         if(inbox == null)
-            return "null";
+            return null;
 
         return inbox.getLast().getMessage();
     }
@@ -67,8 +67,8 @@ public class Gmail extends Email {
         //find number of mails in the inbox which are received between given dates
         //It is guaranteed that start date <= end date
         int numberOfMail = 0;
-        int s = -1;
-        int e = 0;
+        int s = 0;
+        int e = -1;
         boolean isSFilled = false;
 
         for(int i = 0; i < inbox.size(); i++) {
