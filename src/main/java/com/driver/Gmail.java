@@ -49,7 +49,7 @@ public class Gmail extends Email {
         // If the inbox is empty, return null
         // Else, return the message of the latest mail present in the inbox
         if(inbox == null)
-            return null;
+            return "";
 
         return inbox.getFirst().getMessage();
     }
@@ -58,7 +58,7 @@ public class Gmail extends Email {
         // If the inbox is empty, return null
         // Else, return the message of the oldest mail present in the inbox
         if(inbox == null)
-            return null;
+            return "";
 
         return inbox.getLast().getMessage();
     }
