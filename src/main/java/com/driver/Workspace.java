@@ -5,6 +5,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class Workspace extends Gmail{
 
@@ -28,16 +30,32 @@ public class Workspace extends Gmail{
         // Example: If a meeting ends at 10:00 am, you cannot attend another meeting starting at 10:00 am
         if(calendar.isEmpty()) return 0;
 
-        int maxMeetings = 1;
-        LocalTime endTime = calendar.get(0).getEndTime();
-
-        for(int i = 1; i < calendar.size(); i++) {
-            if(calendar.get(i).getStartTime().isAfter(endTime)) {
-                maxMeetings += 1;
-                endTime = calendar.get(i).getEndTime();
+        Collections.sort(calendar, new Comparator<Meeting>() {
+            @Override
+            public int compare(Meeting o1, Meeting o2) {
+                return o1.getStartTime().compareTo(o2.getStartTime());
             }
-        }
+        });
 
+        PriorityQueue<Meeting> pq = new PriorityQueue<>( (a,b) -> {
+            return a.getEndTime().compareTo(b.getEndTime());
+        });
+
+        int maxMeetings = 0, i = 0, n = calendar.size();
+        LocalTime currEndTime = LocalTime.MIN;
+
+        while(!pq.isEmpty() || i < n) {
+            if(pq.isEmpty())
+                currEndTime = calendar.get(0).getEndTime();
+            while(i < n && calendar.get(i).getEndTime().isBefore(currEndTime)) {
+                pq.add(calendar.get(i));
+                i++;
+            }
+            currEndTime = pq.peek() == null ? LocalTime.MIN : pq.poll().getEndTime();
+            maxMeetings += 1;
+            while(!pq.isEmpty() && pq.peek().getEndTime().isBefore(currEndTime))
+                pq.poll();
+        }
         return maxMeetings;
     }
 }
