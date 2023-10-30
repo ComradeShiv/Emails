@@ -30,32 +30,48 @@ public class Workspace extends Gmail{
         // Example: If a meeting ends at 10:00 am, you cannot attend another meeting starting at 10:00 am
         if(calendar.isEmpty()) return 0;
 
-        Collections.sort(calendar, new Comparator<Meeting>() {
-            @Override
-            public int compare(Meeting o1, Meeting o2) {
-                return o1.getStartTime().compareTo(o2.getStartTime());
+//        Collections.sort(calendar, new Comparator<Meeting>() {
+//            @Override
+//            public int compare(Meeting o1, Meeting o2) {
+//                return o1.getStartTime().compareTo(o2.getStartTime());
+//            }
+//        });
+
+        Collections.sort(calendar, (a,b) -> a.getEndTime().compareTo(b.getEndTime()));
+
+        int count = 0;
+        Meeting preMeet = null;
+
+        for(Meeting currMeet: calendar) {
+            if(preMeet == null || currMeet.getStartTime().compareTo(preMeet.getEndTime()) > 0) {
+                count++;
+                preMeet = currMeet;
             }
-        });
 
-        PriorityQueue<Meeting> pq = new PriorityQueue<>( (a,b) -> {
-            return a.getEndTime().compareTo(b.getEndTime());
-        });
-
-        int maxMeetings = 0, i = 0, n = calendar.size();
-        LocalTime currEndTime = LocalTime.MIN;
-
-        while(!pq.isEmpty() || i < n) {
-            if(pq.isEmpty())
-                currEndTime = calendar.get(0).getEndTime();
-            while(i < n && calendar.get(i).getEndTime().isBefore(currEndTime)) {
-                pq.add(calendar.get(i));
-                i++;
-            }
-            currEndTime = pq.peek() == null ? LocalTime.MIN : pq.poll().getEndTime();
-            maxMeetings += 1;
-            while(!pq.isEmpty() && pq.peek().getEndTime().isBefore(currEndTime))
-                pq.poll();
         }
-        return maxMeetings;
+        return count;
+
+//        PriorityQueue<Meeting> pq = new PriorityQueue<>( (a,b) -> {
+//            return a.getEndTime().compareTo(b.getEndTime());
+//        });
+//
+//        int maxMeetings = 0, i = 0, n = calendar.size();
+//        LocalTime currEndTime = LocalTime.MIN;
+//
+//        while(!pq.isEmpty() || i < n) {
+////            System.out.println("not end");
+//            if(pq.isEmpty())
+//                currEndTime = calendar.get(i).getEndTime();
+//            pq.add(calendar.get(0));
+//            while(i < n && calendar.get(i).getEndTime().isBefore(currEndTime)) {
+//                pq.add(calendar.get(i));
+//                i++;
+//            }
+//            currEndTime = pq.poll().getEndTime();
+//            maxMeetings += 1;
+//            while(!pq.isEmpty() && pq.peek().getEndTime().isBefore(currEndTime))
+//                pq.poll();
+//        }
+//        return maxMeetings;
     }
 }
