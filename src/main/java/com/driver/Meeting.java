@@ -27,8 +27,8 @@ public class Meeting {
         this.endTime = endTime;
     }
 
-//    public int compareTo(LocalTime t) {
-//        return this.equals(t);
-//    }
+    public int compareTo(LocalTime t) {
+        return this.compareTo(t);
+    }
 
 }

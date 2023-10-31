@@ -50,28 +50,5 @@ public class Workspace extends Gmail{
 
         }
         return count;
-
-//        PriorityQueue<Meeting> pq = new PriorityQueue<>( (a,b) -> {
-//            return a.getEndTime().compareTo(b.getEndTime());
-//        });
-//
-//        int maxMeetings = 0, i = 0, n = calendar.size();
-//        LocalTime currEndTime = LocalTime.MIN;
-//
-//        while(!pq.isEmpty() || i < n) {
-////            System.out.println("not end");
-//            if(pq.isEmpty())
-//                currEndTime = calendar.get(i).getEndTime();
-//            pq.add(calendar.get(0));
-//            while(i < n && calendar.get(i).getEndTime().isBefore(currEndTime)) {
-//                pq.add(calendar.get(i));
-//                i++;
-//            }
-//            currEndTime = pq.poll().getEndTime();
-//            maxMeetings += 1;
-//            while(!pq.isEmpty() && pq.peek().getEndTime().isBefore(currEndTime))
-//                pq.poll();
-//        }
-//        return maxMeetings;
     }
 }
